@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/urs-wagner/GTK/sophisticated/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,0 +1,3 @@
+/home/urs-wagner/GTK/sophisticated/build/CMakeFiles/sophisticated.dir
+/home/urs-wagner/GTK/sophisticated/build/CMakeFiles/edit_cache.dir
+/home/urs-wagner/GTK/sophisticated/build/CMakeFiles/rebuild_cache.dir
