@@ -1,1 +1,91 @@
+# =========================
+# Build directories
+# =========================
 build/
+build-*/
+_build/
+out/
+
+# =========================
+# Compiled binaries & objects
+# =========================
+*.o
+*.lo
+*.la
+*.a
+*.so
+*.so.*
+*.dll
+*.exe
+*.out
+
+# =========================
+# C / C++ intermediate files
+# =========================
+*.d
+*.gcno
+*.gcda
+*.gcov
+
+# =========================
+# Meson
+# =========================
+meson-private/
+meson-logs/
+meson-info/
+
+# =========================
+# CMake
+# =========================
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# =========================
+# Autotools
+# =========================
+autom4te.cache/
+aclocal.m4
+configure
+config.log
+config.status
+libtool
+ltmain.sh
+
+# =========================
+# GTK / GObject generated files
+# =========================
+*.gresource
+*.ui~
+*.glade~
+
+# =========================
+# Editor / IDE files
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Debug / profiling
+# =========================
+gmon.out
+perf.data*
+core
+core.*
+
+# =========================
+# Logs
+# =========================
+*.log
