@@ -34,7 +34,8 @@ void FindTextDialog::build_ui()
 {
     m_win.set_title("Find");
     m_win.set_transient_for(m_parent);
-    m_win.set_modal(false);
+      m_win.set_destroy_with_parent(true);
+  m_win.set_modal(true);        
     m_win.set_default_size(520, 140);
 
     m_root.set_margin(12);
@@ -76,7 +77,7 @@ void FindTextDialog::build_ui()
     m_win.signal_close_request().connect([this]() -> bool
                                          {
     m_win.hide();
-    return true; }, false);
+    return false; }, false);
 }
 
 void FindTextDialog::connect_signals()

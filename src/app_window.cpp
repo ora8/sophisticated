@@ -7,20 +7,22 @@
 AppWindow::AppWindow()
 {
     auto theme = Gtk::IconTheme::get_for_display(Gdk::Display::get_default());
-    if (theme) theme->add_search_path("assets");
+    if (theme)
+        theme->add_search_path("assets");
 
     set_icon_name("com.example.sophisticatedgtk4");
 
-    set_title("Sophisticated GTKmm App (GTK4)");
+    set_title("Editor App (GTK4)");
     set_default_size(1100, 700);
 
     set_child(m_root);
 
     build_header();
     build_layout();
-    build_editor();      // ✅ IMPORTANT: actually create/pack editor widgets
+    build_editor(); // ✅ IMPORTANT: actually create/pack editor widgets
     build_menu();
     install_actions();
+    install_shortcuts();
 
     apply_theme();
 }
@@ -97,11 +99,21 @@ void AppWindow::build_editor()
     m_buffer = Gtk::TextBuffer::create();
     m_textview.set_buffer(m_buffer);
     m_textview.set_monospace(true);
-    m_textview.set_wrap_mode(Gtk::WrapMode::WORD_CHAR);
+    m_buffer = Gtk::TextBuffer::create();
+    m_textview.set_buffer(m_buffer);
+
+    // Track modifications
+    m_buffer->signal_changed().connect([this]()
+                                       {
+    if (!m_modified) {
+        m_modified = true;
+        m_footer_left.set_text("Modified");
+    } });
 
     // Highlight tag for search
     auto tagtable = m_buffer->get_tag_table();
-    if (!tagtable->lookup("hl")) {
+    if (!tagtable->lookup("hl"))
+    {
         auto tag = Gtk::TextBuffer::Tag::create("hl");
         tag->property_background() = "yellow";
         tag->property_foreground() = "black";
@@ -123,6 +135,7 @@ void AppWindow::build_menu()
     file_section->append("Open", "win.open");
     file_section->append("Save", "win.save");
     file_section->append("Find…", "win.find_text");
+    file_section->append("Replace…", "win.replace_text");
 
     auto quit_section = Gio::Menu::create();
     quit_section->append("Quit", "win.quit");
@@ -145,47 +158,82 @@ void AppWindow::install_actions()
     m_actions = Gio::SimpleActionGroup::create();
 
     auto open = Gio::SimpleAction::create("open");
-    open->signal_activate().connect([this](auto &) { on_open(); });
+    open->signal_activate().connect([this](auto &)
+                                    { on_open(); });
     m_actions->add_action(open);
 
     auto save = Gio::SimpleAction::create("save");
-    save->signal_activate().connect([this](auto &) { on_save(); });
+    save->signal_activate().connect([this](auto &)
+                                    { on_save(); });
     m_actions->add_action(save);
 
     auto find_text = Gio::SimpleAction::create("find_text");
-    find_text->signal_activate().connect([this](auto &) { on_find_text(); });
+    find_text->signal_activate().connect([this](auto &)
+                                         { on_find_text(); });
     m_actions->add_action(find_text);
 
+    auto replace_text = Gio::SimpleAction::create("replace_text");
+    replace_text->signal_activate().connect([this](auto &)
+                                            { on_replace_text(); });
+    m_actions->add_action(replace_text);
+
     auto prefs = Gio::SimpleAction::create("preferences");
-    prefs->signal_activate().connect([this](auto &) { on_preferences(); });
+    prefs->signal_activate().connect([this](auto &)
+                                     { on_preferences(); });
     m_actions->add_action(prefs);
 
     auto theme = Gio::SimpleAction::create("toggle_theme");
-    theme->signal_activate().connect([this](auto &) { on_toggle_theme(); });
+    theme->signal_activate().connect([this](auto &)
+                                     { on_toggle_theme(); });
     m_actions->add_action(theme);
 
     auto about = Gio::SimpleAction::create("about");
-    about->signal_activate().connect([this](auto &) { on_about(); });
+    about->signal_activate().connect([this](auto &)
+                                     { on_about(); });
     m_actions->add_action(about);
 
     auto quit = Gio::SimpleAction::create("quit");
-    quit->signal_activate().connect([this](auto &) { on_quit(); });
+    quit->signal_activate().connect([this](auto &)
+                                    { on_quit(); });
     m_actions->add_action(quit);
 
     // ✅ "win.*" namespace for menu models
     insert_action_group("win", m_actions);
 }
 
+void AppWindow::install_shortcuts()
+{
+    m_shortcuts = Gtk::ShortcutController::create();
+    m_shortcuts->set_scope(Gtk::ShortcutScope::GLOBAL); // works anywhere in the window
+
+    auto add = [&](guint keyval, Gdk::ModifierType mods, const char* action_name) {
+        auto trigger = Gtk::KeyvalTrigger::create(keyval, mods);
+        auto action  = Gtk::NamedAction::create(action_name);
+        auto sc      = Gtk::Shortcut::create(trigger, action);
+        m_shortcuts->add_shortcut(sc);
+    };
+
+    add(GDK_KEY_o, Gdk::ModifierType::CONTROL_MASK, "win.open");         // Ctrl+O
+    add(GDK_KEY_s, Gdk::ModifierType::CONTROL_MASK, "win.save");         // Ctrl+S
+    add(GDK_KEY_f, Gdk::ModifierType::CONTROL_MASK, "win.find_text");    // Ctrl+F
+    add(GDK_KEY_h, Gdk::ModifierType::CONTROL_MASK, "win.replace_text"); // Ctrl+H (common “Replace”)
+    add(GDK_KEY_q, Gdk::ModifierType::CONTROL_MASK, "win.quit");         // Ctrl+Q
+
+    add_controller(m_shortcuts);
+}
+
 // -------- File helpers --------
 void AppWindow::load_file(const std::string &path)
 {
-    if (!m_buffer) {
+    if (!m_buffer)
+    {
         std::cerr << "ERROR: buffer not initialized\n";
         return;
     }
 
     std::ifstream in(path);
-    if (!in) {
+    if (!in)
+    {
         set_status("Failed to open: " + path);
         return;
     }
@@ -193,18 +241,22 @@ void AppWindow::load_file(const std::string &path)
     std::stringstream ss;
     ss << in.rdbuf();
 
-    m_buffer->set_text(ss.str());        // ✅ only once
+    m_buffer->set_text(ss.str()); // ✅ only once
     m_current_path = path;
 
     set_status("Opened: " + path);
+
+    m_modified = false;
 }
 
 void AppWindow::save_file_to(const std::string &path)
 {
-    if (!m_buffer) return;
+    if (!m_buffer)
+        return;
 
     std::ofstream out(path);
-    if (!out) {
+    if (!out)
+    {
         set_status("Failed to save: " + path);
         return;
     }
@@ -218,7 +270,8 @@ void AppWindow::save_file_to(const std::string &path)
 // -------- Actions --------
 void AppWindow::on_find_text()
 {
-    if (!m_find_text) {
+    if (!m_find_text)
+    {
         m_find_text = std::make_unique<FindTextDialog>(*this, m_textview);
     }
     m_find_text->present();
@@ -229,20 +282,33 @@ void AppWindow::on_open()
     auto dlg = Gtk::FileDialog::create();
     dlg->set_title("Open File");
 
-    dlg->open(*this, [this, dlg](const Glib::RefPtr<Gio::AsyncResult> &res) {
+    dlg->open(*this, [this, dlg](const Glib::RefPtr<Gio::AsyncResult> &res)
+              {
         try {
             auto file = dlg->open_finish(res);
             if (!file) return;
             load_file(file->get_path());
         } catch (const Glib::Error &e) {
             set_status(Glib::ustring("Open canceled/failed: ") + e.what());
-        }
-    });
+        } });
+}
+
+void AppWindow::on_replace_text()
+{
+    if (!m_replace_text)
+    {
+        m_replace_text = std::make_unique<ReplaceTextDialog>(*this, m_textview);
+    }
+    m_replace_text->present();
 }
 
 void AppWindow::on_save()
 {
-    if (!m_current_path.empty()) {
+    if (!m_modified)
+        return; // No changes to save
+
+    if (!m_current_path.empty())
+    {
         save_file_to(m_current_path);
         return;
     }
@@ -250,15 +316,15 @@ void AppWindow::on_save()
     auto dlg = Gtk::FileDialog::create();
     dlg->set_title("Save File");
 
-    dlg->save(*this, [this, dlg](const Glib::RefPtr<Gio::AsyncResult> &res) {
+    dlg->save(*this, [this, dlg](const Glib::RefPtr<Gio::AsyncResult> &res)
+              {
         try {
             auto file = dlg->save_finish(res);
             if (!file) return;
             save_file_to(file->get_path());
         } catch (const Glib::Error &e) {
             set_status(Glib::ustring("Save canceled/failed: ") + e.what());
-        }
-    });
+        } });
 }
 
 void AppWindow::on_search_changed()
@@ -267,16 +333,19 @@ void AppWindow::on_search_changed()
 
 void AppWindow::highlight_matches(const Glib::ustring &term)
 {
-    if (!m_buffer) return;
+    if (!m_buffer)
+        return;
 
     auto start = m_buffer->begin();
     auto end = m_buffer->end();
     m_buffer->remove_tag_by_name("hl", start, end);
 
-    if (term.empty()) return;
+    if (term.empty())
+        return;
 
     auto it = m_buffer->begin();
-    while (true) {
+    while (true)
+    {
         auto match_start = it;
         auto match_end = it;
 
@@ -308,10 +377,10 @@ void AppWindow::on_preferences()
 
     auto dark = Gtk::make_managed<Gtk::CheckButton>("Enable darker look (simple CSS)");
     dark->set_active(m_dark);
-    dark->signal_toggled().connect([this, dark]() {
+    dark->signal_toggled().connect([this, dark]()
+                                   {
         m_dark = dark->get_active();
-        apply_theme();
-    });
+        apply_theme(); });
 
     box->append(*title);
     box->append(*dark);
@@ -328,7 +397,8 @@ void AppWindow::on_toggle_theme()
 
 void AppWindow::apply_theme()
 {
-    if (!m_css) m_css = Gtk::CssProvider::create();
+    if (!m_css)
+        m_css = Gtk::CssProvider::create();
 
     const char *css_light = "textview { font-size: 12pt; }";
     const char *css_dark =
@@ -336,10 +406,16 @@ void AppWindow::apply_theme()
         "entry, textview { background-color: #2a2a2a; color: #e6e6e6; }"
         "textview text { background-color: #2a2a2a; color: #e6e6e6; }";
 
-    try { m_css->load_from_data(m_dark ? css_dark : css_light); }
-    catch (...) {}
+    try
+    {
+        m_css->load_from_data(m_dark ? css_dark : css_light);
+    }
+    catch (...)
+    {
+    }
 
-    if (auto display = Gdk::Display::get_default()) {
+    if (auto display = Gdk::Display::get_default())
+    {
         Gtk::StyleContext::add_provider_for_display(
             display, m_css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
@@ -352,7 +428,7 @@ void AppWindow::on_about()
     auto about = Gtk::make_managed<Gtk::AboutDialog>();
     about->set_transient_for(*this);
     about->set_modal(true);
-    about->set_program_name("Sophisticated GTKmm App (GTK4)");
+    about->set_program_name("Text Editor");
     about->set_version("1.0");
     about->set_comments("gtkmm-4.0 editor demo with File/Help menus + Find dialog.");
     about->present();
@@ -360,8 +436,78 @@ void AppWindow::on_about()
 
 void AppWindow::on_quit()
 {
-    close();
+    if (!m_modified) {
+        close();
+        return;
+    }
+
+    query_unsaved_changes([this](bool should_close) {
+        if (should_close)
+            close();
+    });
 }
+
+void AppWindow::query_unsaved_changes(std::function<void(bool should_close)> done)
+{
+    auto* dialog = new Gtk::MessageDialog(
+        *this,
+        "The document has unsaved changes.",
+        false,
+        Gtk::MessageType::QUESTION,
+        Gtk::ButtonsType::NONE,
+        true
+    );
+
+    dialog->set_secondary_text("Do you want to save your changes before exiting?");
+
+    dialog->add_button("_Cancel", Gtk::ResponseType::CANCEL);
+    dialog->add_button("_Discard", Gtk::ResponseType::REJECT);
+    dialog->add_button("_Save", Gtk::ResponseType::ACCEPT);
+    dialog->set_default_response(Gtk::ResponseType::ACCEPT);
+
+    dialog->signal_response().connect(
+        [this, dialog, done](int response) mutable {
+            dialog->hide();
+            delete dialog;
+
+            switch (static_cast<Gtk::ResponseType>(response)) {
+            case Gtk::ResponseType::ACCEPT: { // Save
+                if (!m_current_path.empty()) {
+                    save_file_to(m_current_path);
+                    done(true);  // close after save
+                } else {
+                    auto dlg = Gtk::FileDialog::create();
+                    dlg->set_title("Save File");
+
+                    dlg->save(*this, [this, dlg, done](const Glib::RefPtr<Gio::AsyncResult>& res) mutable {
+                        try {
+                            auto file = dlg->save_finish(res);
+                            if (!file) { done(false); return; } // user canceled Save As
+                            save_file_to(file->get_path());
+                            done(true);
+                        } catch (const Glib::Error& e) {
+                            set_status(Glib::ustring("Save failed: ") + e.what());
+                            done(false);
+                        }
+                    });
+                }
+                break;
+            }
+
+            case Gtk::ResponseType::REJECT: // Discard
+                done(true);
+                break;
+
+            default: // Cancel / closed
+                done(false);
+                break;
+            }
+        }
+    );
+
+    dialog->present();
+}
+
 
 void AppWindow::set_status(const Glib::ustring &s)
 {

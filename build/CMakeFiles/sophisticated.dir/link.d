@@ -5,6 +5,7 @@ sophisticated: \
   CMakeFiles/sophisticated.dir/src/main.cpp.o \
   CMakeFiles/sophisticated.dir/src/app_window.cpp.o \
   CMakeFiles/sophisticated.dir/src/find_text_dialog.cpp.o \
+  CMakeFiles/sophisticated.dir/src/replace_text_dialog.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libgtkmm-4.0.so \
   /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libpangomm-2.48.so \
   /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libgiomm-2.68.so \
@@ -152,6 +153,8 @@ CMakeFiles/sophisticated.dir/src/main.cpp.o:
 CMakeFiles/sophisticated.dir/src/app_window.cpp.o:
 
 CMakeFiles/sophisticated.dir/src/find_text_dialog.cpp.o:
+
+CMakeFiles/sophisticated.dir/src/replace_text_dialog.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libgtkmm-4.0.so:
 

@@ -85,12 +85,12 @@ clean: CMakeFiles/sophisticated.dir/clean
 CMakeFiles/sophisticated.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sophisticated.dir/build.make CMakeFiles/sophisticated.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sophisticated.dir/build.make CMakeFiles/sophisticated.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/urs-wagner/GTK/sophisticated/build/CMakeFiles --progress-num=1,2,3,4 "Built target sophisticated"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/urs-wagner/GTK/sophisticated/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target sophisticated"
 .PHONY : CMakeFiles/sophisticated.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/sophisticated.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/urs-wagner/GTK/sophisticated/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/urs-wagner/GTK/sophisticated/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/sophisticated.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/urs-wagner/GTK/sophisticated/build/CMakeFiles 0
 .PHONY : CMakeFiles/sophisticated.dir/rule
@@ -102,7 +102,7 @@ sophisticated: CMakeFiles/sophisticated.dir/rule
 # codegen rule for target.
 CMakeFiles/sophisticated.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sophisticated.dir/build.make CMakeFiles/sophisticated.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/urs-wagner/GTK/sophisticated/build/CMakeFiles --progress-num=1,2,3,4 "Finished codegen for target sophisticated"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/urs-wagner/GTK/sophisticated/build/CMakeFiles --progress-num=1,2,3,4,5 "Finished codegen for target sophisticated"
 .PHONY : CMakeFiles/sophisticated.dir/codegen
 
 # clean rule for target.

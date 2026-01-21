@@ -1,7 +1,8 @@
-CMakeFiles/sophisticated.dir/src/main.cpp.o: \
- /home/urs-wagner/GTK/sophisticated/src/main.cpp \
- /usr/include/stdc-predef.h /usr/include/gtkmm-4.0/gtkmm.h \
- /usr/include/glibmm-2.68/glibmm.h \
+CMakeFiles/sophisticated.dir/src/replace_text_dialog.cpp.o: \
+ /home/urs-wagner/GTK/sophisticated/src/replace_text_dialog.cpp \
+ /usr/include/stdc-predef.h \
+ /home/urs-wagner/GTK/sophisticated/src/replace_text_dialog.hpp \
+ /usr/include/gtkmm-4.0/gtkmm.h /usr/include/glibmm-2.68/glibmm.h \
  /usr/lib/x86_64-linux-gnu/glibmm-2.68/include/glibmmconfig.h \
  /usr/include/glibmm-2.68/glibmm/base64.h /usr/include/c++/15/string \
  /usr/include/c++/15/bits/requires_hosted.h \
@@ -1657,15 +1658,4 @@ CMakeFiles/sophisticated.dir/src/main.cpp.o: \
  /usr/include/gtkmm-4.0/gtkmm/volumebutton.h \
  /usr/include/gtkmm-4.0/gtkmm/widgetpaintable.h \
  /usr/include/gtkmm-4.0/gtkmm/windowcontrols.h \
- /usr/include/gtkmm-4.0/gtkmm/windowhandle.h \
- /home/urs-wagner/GTK/sophisticated/src/app_window.hpp \
- /home/urs-wagner/GTK/sophisticated/src/find_text_dialog.hpp \
- /home/urs-wagner/GTK/sophisticated/src/replace_text_dialog.hpp \
- /usr/include/c++/15/thread /usr/include/c++/15/stop_token \
- /usr/include/c++/15/bits/std_thread.h /usr/include/c++/15/semaphore \
- /usr/include/c++/15/bits/semaphore_base.h \
- /usr/include/c++/15/bits/chrono.h /usr/include/c++/15/ratio \
- /usr/include/c++/15/bits/atomic_timed_wait.h \
- /usr/include/c++/15/bits/this_thread_sleep.h \
- /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/semaphore.h \
- /usr/include/x86_64-linux-gnu/bits/semaphore.h
+ /usr/include/gtkmm-4.0/gtkmm/windowhandle.h

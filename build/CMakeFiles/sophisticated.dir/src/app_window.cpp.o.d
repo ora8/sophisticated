@@ -1659,9 +1659,11 @@ CMakeFiles/sophisticated.dir/src/app_window.cpp.o: \
  /usr/include/gtkmm-4.0/gtkmm/volumebutton.h \
  /usr/include/gtkmm-4.0/gtkmm/widgetpaintable.h \
  /usr/include/gtkmm-4.0/gtkmm/windowcontrols.h \
- /usr/include/gtkmm-4.0/gtkmm/windowhandle.h /usr/include/c++/15/thread \
- /usr/include/c++/15/stop_token /usr/include/c++/15/bits/std_thread.h \
- /usr/include/c++/15/semaphore /usr/include/c++/15/bits/semaphore_base.h \
+ /usr/include/gtkmm-4.0/gtkmm/windowhandle.h \
+ /home/urs-wagner/GTK/sophisticated/src/replace_text_dialog.hpp \
+ /usr/include/c++/15/thread /usr/include/c++/15/stop_token \
+ /usr/include/c++/15/bits/std_thread.h /usr/include/c++/15/semaphore \
+ /usr/include/c++/15/bits/semaphore_base.h \
  /usr/include/c++/15/bits/chrono.h /usr/include/c++/15/ratio \
  /usr/include/c++/15/bits/atomic_timed_wait.h \
  /usr/include/c++/15/bits/this_thread_sleep.h \

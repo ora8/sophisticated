@@ -6,6 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/sophisticated.dir/src/find_text_dialog.cpp.o.d"
   "CMakeFiles/sophisticated.dir/src/main.cpp.o"
   "CMakeFiles/sophisticated.dir/src/main.cpp.o.d"
+  "CMakeFiles/sophisticated.dir/src/replace_text_dialog.cpp.o"
+  "CMakeFiles/sophisticated.dir/src/replace_text_dialog.cpp.o.d"
   "sophisticated"
   "sophisticated.pdb"
 )

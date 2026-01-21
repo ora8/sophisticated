@@ -11,6 +11,7 @@ add_executable(sophisticated
   src/main.cpp
   src/app_window.cpp
   src/find_text_dialog.cpp
+  src/replace_text_dialog.cpp
 )
 
 target_include_directories(sophisticated PRIVATE

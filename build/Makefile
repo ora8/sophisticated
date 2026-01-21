@@ -201,6 +201,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sophisticated.dir/build.make CMakeFiles/sophisticated.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/replace_text_dialog.o: src/replace_text_dialog.cpp.o
+.PHONY : src/replace_text_dialog.o
+
+# target to build an object file
+src/replace_text_dialog.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sophisticated.dir/build.make CMakeFiles/sophisticated.dir/src/replace_text_dialog.cpp.o
+.PHONY : src/replace_text_dialog.cpp.o
+
+src/replace_text_dialog.i: src/replace_text_dialog.cpp.i
+.PHONY : src/replace_text_dialog.i
+
+# target to preprocess a source file
+src/replace_text_dialog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sophisticated.dir/build.make CMakeFiles/sophisticated.dir/src/replace_text_dialog.cpp.i
+.PHONY : src/replace_text_dialog.cpp.i
+
+src/replace_text_dialog.s: src/replace_text_dialog.cpp.s
+.PHONY : src/replace_text_dialog.s
+
+# target to generate assembly for a file
+src/replace_text_dialog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sophisticated.dir/build.make CMakeFiles/sophisticated.dir/src/replace_text_dialog.cpp.s
+.PHONY : src/replace_text_dialog.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -219,6 +243,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/replace_text_dialog.o"
+	@echo "... src/replace_text_dialog.i"
+	@echo "... src/replace_text_dialog.s"
 .PHONY : help
 
 
