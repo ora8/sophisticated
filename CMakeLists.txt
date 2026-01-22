@@ -21,9 +21,34 @@ target_include_directories(sophisticated PRIVATE
 
 target_compile_options(sophisticated PRIVATE
   ${GTKMM_CFLAGS_OTHER}
-  -Wall -Wextra -Wpedantic
 )
 
-target_link_libraries(sophisticated PRIVATE
-  ${GTKMM_LIBRARIES}
-)
+if (MSVC)
+  # MSVC warning level + “treat warnings as errors” (optional)
+  target_compile_options(sophisticated PRIVATE
+    /W4           # similar to -Wall/-Wextra (not identical)
+    /permissive-  # stricter standard conformance (roughly like pedantic-ish)
+    /EHsc         # standard C++ exceptions (often needed)
+    /utf-8        # make source files UTF-8
+    # /WX         # uncomment if you want warnings as errors
+  )
+else()
+  target_compile_options(sophisticated PRIVATE
+    -Wall -Wextra -Wpedantic
+  )
+endif()
+
+
+#target_link_libraries(sophisticated PRIVATE
+#  ${GTKMM_LIBRARIES}
+#)
+
+# --------------------------
+# GTKMM dependency
+# --------------------------
+find_package(PkgConfig REQUIRED)
+
+# gtkmm 4
+pkg_check_modules(GTKMM REQUIRED IMPORTED_TARGET gtkmm-4.0)
+
+target_link_libraries(sophisticated PRIVATE PkgConfig::GTKMM)
